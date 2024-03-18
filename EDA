@@ -1,0 +1,61 @@
+
+
+Copy code
+import pandas as pd
+
+titanic_data = pd.read_csv("titanic.csv")
+
+print(titanic_data.head())
+After loading the dataset, we'll check for missing values and handle them appropriately:
+
+python
+Copy code
+missing_values = titanic_data.isnull().sum()
+print("Missing values:")
+print(missing_values)
+
+
+titanic_data['Age'].fillna(titanic_data['Age'].median(), inplace=True
+mode_embarked = titanic_data['Embarked'].mode()[0]
+titanic_data['Embarked'].fillna(mode_embarked, inplace=True)
+titanic_data.drop('Cabin', axis=1, inplace=True)
+Next, we can perform some basic exploratory data analysis to understand the distribution of variables and relationships between them:
+
+
+Copy code
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(8, 6))
+sns.histplot(titanic_data['Age'], bins=20, kde=True, color='skyblue')
+plt.title('Distribution of Age')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.show()
+
+plt.figure(figsize=(8, 6))
+sns.countplot(data=titanic_data, x='Sex', hue='Survived', palette='pastel')
+plt.title('Survival Count by Sex')
+plt.xlabel('Sex')
+plt.ylabel('Count')
+plt.legend(title='Survived', loc='upper right')
+plt.show()
+
+
+plt.figure(figsize=(8, 6))
+sns.countplot(data=titanic_data, x='Pclass', hue='Survived', palette='pastel')
+plt.title('Survival Count by Pclass')
+plt.xlabel('Pclass')
+plt.ylabel('Count')
+plt.legend(title='Survived', loc='upper right')
+plt.show()
+
+
+
+plt.figure(figsize=(8, 6))
+sns.countplot(data=titanic_data, x='Embarked', hue='Survived', palette='pastel')
+plt.title('Survival Count by Embarked')
+plt.xlabel('Embarked')
+plt.ylabel('Count')
+plt.legend(title='Survived', loc='upper right')
+plt.show()
