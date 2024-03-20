@@ -1,0 +1,45 @@
+
+import tweepy
+from textblob import TextBlob
+import matplotlib.pyplot as plt
+
+consumer_key = 'your_consumer_key'
+consumer_secret = 'your_consumer_secret'
+access_token = 'your_access_token'
+access_token_secret = 'your_access_token_secret'
+
+
+auth = tweepy.OAuth1UserHandler(consumer_key, consumer_secret, access_token, access_token_secret)
+api = tweepy.API(auth)
+
+
+def analyze_sentiment(text):
+    analysis = TextBlob(text)
+    return analysis.sentiment.polarity
+
+
+def get_tweets(topic, count=100):
+    tweets = api.search(q=topic, count=count)
+    sentiments = []
+    for tweet in tweets:
+        sentiment = analyze_sentiment(tweet.text)
+        sentiments.append(sentiment)
+    return sentiments
+
+def visualize_sentiment(sentiments):
+    plt.hist(sentiments, bins=[-1, -0.5, 0, 0.5, 1], color='skyblue', edgecolor='black', alpha=0.7)
+    plt.xlabel('Sentiment Polarity')
+    plt.ylabel('Frequency')
+    plt.title('Sentiment Analysis of Tweets')
+    plt.xticks([-1, -0.5, 0, 0.5, 1], ['Negative', 'Somewhat Negative', 'Neutral', 'Somewhat Positive', 'Positive'])
+    plt.show()
+
+
+def main():
+    topic = input("Enter the topic/brand you want to analyze: ")
+    count = int(input("Enter the number of tweets to analyze: "))
+    sentiments = get_tweets(topic, count)
+    visualize_sentiment(sentiments)
+
+if __name__ == "__main__":
+    main()
