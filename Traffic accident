@@ -1,0 +1,53 @@
+
+
+python
+Copy code
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+accident_data = pd.read_csv("traffic_accident_data.csv")
+
+
+accident_data.dropna(inplace=True
+accident_data['timestamp'] = pd.to_datetime(accident_data['timestamp'])
+
+accident_data['hour'] = accident_data['timestamp'].dt.hour
+
+
+
+print(accident_data.describe())
+
+print(accident_data.corr())
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x='longitude', y='latitude', data=accident_data, alpha=0.1)
+plt.title("Accident Hotspots")
+plt.xlabel("Longitude")
+plt.ylabel("Latitude")
+plt.show()
+
+
+plt.figure(figsize=(10, 6))
+sns.countplot(x='weather_condition', data=accident_data)
+plt.title("Accidents by Weather Condition")
+plt.xlabel("Weather Condition")
+plt.ylabel("Number of Accidents")
+plt.xticks(rotation=45)
+plt.show()
+
+plt.figure(figsize=(10, 6))
+sns.countplot(x='road_condition', data=accident_data)
+plt.title("Accidents by Road Condition")
+plt.xlabel("Road Condition")
+plt.ylabel("Number of Accidents")
+plt.xticks(rotation=45)
+plt.show()
+
+
+plt.figure(figsize=(10, 6))
+sns.countplot(x='hour', data=accident_data)
+plt.title("Accidents by Time of Day")
+plt.xlabel("Hour of Day")
+plt.ylabel("Number of Accidents")
+plt.show()
